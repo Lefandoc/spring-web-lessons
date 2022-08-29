@@ -48,7 +48,8 @@ public class ProductsService {
 
     @Transactional
     public Product update(ProductDto productDto) {
-        Product product = productsRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукта, не надйен в базе, id: " + productDto.getId()));
+        Product product = productsRepository.findById(productDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукта, не надйен в базе, id: " + productDto.getId()));
         product.setPrice(productDto.getPrice());
         product.setTitle(productDto.getTitle());
         return product;
