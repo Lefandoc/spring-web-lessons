@@ -1,5 +1,5 @@
 angular.module('app', ['ngStorage']).controller('indexController', function ($scope, $rootScope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8189/app/api/v1';
+    const contextPath = 'http://localhost:8787/app/api/v1';
 
     if(!$localStorage.cartName){
         $localStorage.cartName = "cart_" + (Math.random() * 100);
@@ -26,7 +26,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8189/app/auth', $scope.user)
+        $http.post('http://localhost:8787/app/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
@@ -56,21 +56,35 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.addToCart = function (productId) {
-        $http.post('http://localhost:8189/app/api/v1/carts/add/' + productId, $localStorage.cartName)
+        $http.post(contextPath + '/carts/add/' + productId, $localStorage.cartName)
             .then(function (response) {
                 $scope.loadCart();
             });
     }
 
     $scope.loadCart = function () {
-        $http.post('http://localhost:8189/app/api/v1/carts', $localStorage.cartName)
+        $http.post(contextPath + '/carts', $localStorage.cartName)
             .then(function (response) {
                 $scope.Cart = response.data;
             });
     }
 
+    $scope.removeFromCart = function (productId) {
+        $http.post(contextPath + '/carts/remove/' + productId, $localStorage.cartName)
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    }
+
+    $scope.decreaseFromCart = function (productId) {
+        $http.post(contextPath + '/carts/decrease/' + productId, $localStorage.cartName)
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    }
+
     $scope.clearCart = function () {
-        $http.post('http://localhost:8189/app/api/v1/carts/clear', $localStorage.cartName)
+        $http.post(contextPath + '/carts/clear', $localStorage.cartName)
             .then(function (response) {
                 $scope.loadCart();
             });
@@ -85,7 +99,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.showCurrentUserInfo = function () {
-        $http.get('http://localhost:8189/app/api/v1/profile')
+        $http.get('http://localhost:8787/app/api/v1/profile')
             .then(function successCallback(response) {
                 alert('MY NAME IS: ' + response.data.username);
             }, function errorCallback(response) {
@@ -94,4 +108,5 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     }
 
     $scope.loadProducts();
+    $scope.loadCart();
 });

@@ -25,7 +25,7 @@ public class CartService {
         return cart;
     }
 
-    public void addProductByIdToCart(Long id, String cartName) {
+    public void addProductById(Long id, String cartName) {
         if (!getCurrentCart(cartName).addProductCount(id)) {
             Product product = productsService.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Не удалось найти продукт"));
@@ -33,6 +33,14 @@ public class CartService {
             cart.addProduct(product);
             cacheManager.getCache("Cart").put(cartName, cart);
         }
+    }
+
+    public void removeProduct(Long id, String cartName) {
+        getCurrentCart(cartName).removeProduct(id);
+    }
+
+    public void decreaseProductQuantity(Long id, String cartName) {
+        getCurrentCart(cartName).decreaseProduct(id);
     }
 
     public void clear(String cartName) {
