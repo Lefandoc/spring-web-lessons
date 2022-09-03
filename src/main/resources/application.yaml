@@ -1,5 +1,5 @@
 server:
-  port: 8787
+  port: 8189
   servlet:
     context-path: /app
 spring:
@@ -16,5 +16,7 @@ spring:
   h2:
     console:
       enabled: true
-      settings:
-        web-allow-others: false
+
+other:
+  cache:
+    cart: "Cart"

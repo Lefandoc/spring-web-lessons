@@ -13,32 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/carts")
 @RequiredArgsConstructor
 public class CartController {
-
-    private final CartService cartService;
+    private final CartService service;
 
     @PostMapping
     public Cart getCurrentCart(@RequestBody String cartName) {
-        return cartService.getCurrentCart(cartName);
+        return service.getCurrentCart(cartName);
     }
 
     @PostMapping("/add/{id}")
     public void addProductToCart(@PathVariable Long id, @RequestBody String cartName) {
-        cartService.addProductById(id, cartName);
-    }
-
-    @PostMapping("/remove/{id}")
-    public void deleteFromCart(@PathVariable Long id, @RequestBody String cartName) {
-        cartService.removeProduct(id, cartName);
-    }
-
-    @PostMapping("/decrease/{id}")
-    public void decreaseFromCart(@PathVariable Long id, @RequestBody String cartName) {
-        cartService.decreaseProductQuantity(id, cartName);
+        service.addProductByIdToCart(id, cartName);
     }
 
     @PostMapping("/clear")
     public void clearCart(@RequestBody String cartName) {
-        cartService.getCurrentCart(cartName).clear();
+        service.getCurrentCart(cartName).clear();
     }
 
 }

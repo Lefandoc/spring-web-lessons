@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="app">
+<html ng-app="market-front">
 
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
-    <script src="index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
 </head>
 
 <body>
@@ -21,6 +21,12 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/cart">Корзина</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/store">Каталог товаров</a>
+                </li>
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <form class="align-middle" ng-submit="tryToAuth()">
                         <div class="input-group input-group-sm" style="padding: 4px;">
@@ -43,75 +49,12 @@
         </div>
     </nav>
 
-    <form novalidate ng-submit="loadProducts()">
-        <div class="form-floating input-group-sm">
-            <input type="text" class="form-control" id="filterTitle" placeholder="" ng-model="filter.title_part">
-            <label for="filterTitle">Название продукта</label>
-        </div>
-        <p></p>
-        <div class="form-floating input-group-sm">
-            <input type="number" class="form-control" id="filterMinPrice" placeholder="" ng-model="filter.min_price">
-            <label for="filterMinPrice">Мин. цена</label>
-        </div>
-        <p></p>
-        <div class="form-floating input-group-sm">
-            <input type="number" class="form-control" id="filterMaxPrice" placeholder="" ng-model="filter.max_price">
-            <label for="filterMaxPrice">Макс. цена</label>
-        </div>
-        <p></p>
-        <button class="btn btn-outline-warning btn-sm" style="width: 100%;" type="submit">Применить</button>
-    </form>
+    <ng-view></ng-view>
 
-    <h3>Каталог товаров</h3>
-    <table class="table table-hover">
-        <tr>
-            <td>ID</td>
-            <td>Название</td>
-            <td>Цена</td>
-        </tr>
-        <tbody>
-        <tr ng-repeat="p in ProductsPage.content">
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
-            <td>{{p.price}}</td>
-            <td>
-                <button class="btn btn-primary" ng-click="addToCart(p.id)">Добавить в корзину</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <script src="index.js"></script>
+    <script src="store/store.js"></script>
+    <script src="cart/cart.js"></script>
 
-    <h3>Корзина</h3>
-    <table class="table table-hover">
-        <tr>
-            <td>Название товара</td>
-            <td>Количество</td>
-            <td>Цена</td>
-        </tr>
-        <tbody>
-        <tr ng-repeat="item in Cart.items">
-            <td>{{item.title}}</td>
-            <td>
-                {{item.quantity}}
-                &nbsp
-                <button class="btn btn-light btn-sm" ng-click="decreaseFromCart(item.productId)">➖</button>
-            </td>
-            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + item.price}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="removeFromCart(item.productId)">🗑🚮</button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>Итого</td>
-            <td>{{Cart.totalPrice}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <p>
-        <button class="btn btn-secondary" ng-click="clearCart()">Очистить корзину</button>
-        <button class="btn btn-danger" ng-click="showCurrentUserInfo()">Обо мне</button>
-    </p>
 </div>
 
 </body>
