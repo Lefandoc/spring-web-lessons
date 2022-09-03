@@ -30,4 +30,8 @@ public class CartController {
         service.getCurrentCart(cartName).clear();
     }
 
+    @PostMapping("/removeproduct{id}")
+    public void removeProductFromCarts(@PathVariable Long id, @RequestBody String cartName) {
+        service.removeProductByIdToCart(id, cartName);
+    }
 }
