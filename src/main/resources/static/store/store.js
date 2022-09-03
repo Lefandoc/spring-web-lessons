@@ -27,7 +27,12 @@ angular.module('market-front').controller('storeController', function ($scope, $
                 $scope.MyOrders = response.data;
             });
     }
-
+    $scope.removeFromCarts = function (productId) {
+        $http.post('http://localhost:8189/app/api/v1/carts/removeproduct' + productId, $localStorage.cartName)
+            .then(function (response) {
+                $scope.loadCart();
+            });
+    }
     $scope.loadProducts();
     $scope.loadOrders();
 });

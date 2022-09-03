@@ -11,6 +11,8 @@ public class SpringWebApplication {
     // Вспомнить\разобраться с кодом
     // Реализовать методы Cart, которые мы не реализовали на уроке
 
+    // Не знаю какой был пароль, поставил свой - Passw0rd
+
     public static void main(String[] args) {
         SpringApplication.run(SpringWebApplication.class, args);
     }
