@@ -22,9 +22,9 @@ public class CartService {
     private Cart cart;
 
     @Cacheable(value = "${other.cache.cart}", key = "#cartName")
-    public Cart getCurrentCart(String cartName){
+    public Cart getCurrentCart(String cartName) {
         cart = cacheManager.getCache(CACHE_CART).get(cartName, Cart.class);
-        if(!Optional.ofNullable(cart).isPresent()){
+        if (!Optional.ofNullable(cart).isPresent()) {
             cart = new Cart(cartName, cacheManager);
             cacheManager.getCache(CACHE_CART).put(cartName, cart);
         }
@@ -32,13 +32,13 @@ public class CartService {
     }
 
     @CachePut(value = "${other.cache.cart}", key = "#cartName")
-    public Cart addProductByIdToCart(Long id, String cartName){
+    public Cart addProductByIdToCart(Long id, String cartName) {
         Cart cart = getCurrentCart(cartName);
-        if(!getCurrentCart(cartName).addProductCount(id)){
+        if (!getCurrentCart(cartName).addProductCount(id)) {
             Product product = productsService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Не удалось найти продукт"));
             cart.addProduct(product);
         }
-            return cart;
+        return cart;
     }
 
 //    public void addProductByIdToCart(Long id, String cartName){
@@ -51,7 +51,7 @@ public class CartService {
 //    }
 
     @CachePut(value = "${other.cache.cart}", key = "#cartName")
-    public void clear(String cartName){
+    public void clear(String cartName) {
         Cart cart = getCurrentCart(cartName);
         cart.clear();
     }
